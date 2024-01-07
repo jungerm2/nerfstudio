@@ -655,7 +655,7 @@ class DatasetRender(BaseRender):
                 TimeRemainingColumn(elapsed_when_finished=False, compact=False),
                 TimeElapsedColumn(),
             ) as progress:
-                for camera_idx, (camera, batch) in enumerate(progress.track(dataloader, total=len(image_indices))):
+                for camera_idx, (camera, batch) in zip(image_indices, progress.track(dataloader, total=len(image_indices))):
                     # with torch.no_grad():
                     #     outputs = pipeline.model.get_outputs_for_camera(camera)
 
