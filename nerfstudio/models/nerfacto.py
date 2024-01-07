@@ -108,6 +108,8 @@ class NerfactoModelConfig(ModelConfig):
     """Predicted normal loss multiplier."""
     use_proposal_weight_anneal: bool = True
     """Whether to use proposal weight annealing."""
+    use_appearance_embedding: bool = True
+    """Whether to use apperance embedding or not."""
     use_average_appearance_embedding: bool = True
     """Whether to use average appearance embedding or zeros for inference."""
     proposal_weights_anneal_slope: float = 10.0
@@ -160,6 +162,7 @@ class NerfactoModel(Model):
             spatial_distortion=scene_contraction,
             num_images=self.num_train_data,
             use_pred_normals=self.config.predict_normals,
+            use_appearance_embedding=self.config.use_appearance_embedding,
             use_average_appearance_embedding=self.config.use_average_appearance_embedding,
             appearance_embedding_dim=self.config.appearance_embed_dim,
             implementation=self.config.implementation,

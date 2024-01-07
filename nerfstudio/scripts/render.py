@@ -72,7 +72,7 @@ def _render_trajectory_video(
     rendered_resolution_scaling_factor: float = 1.0,
     seconds: float = 5.0,
     output_format: Literal["images", "video"] = "video",
-    image_format: Literal["jpeg", "png"] = "jpeg",
+    image_format: Literal["jpeg", "png", "exr"] = "jpeg",
     jpeg_quality: int = 100,
     depth_near_plane: Optional[float] = None,
     depth_far_plane: Optional[float] = None,
@@ -182,6 +182,12 @@ def _render_trajectory_video(
                         media.write_image(
                             output_image_dir / f"{camera_idx:05d}.jpg", render_image, fmt="jpeg", quality=jpeg_quality
                         )
+                    if image_format == "exr":
+                        import os 
+                        os.environ["OPENCV_IO_ENABLE_OPENEXR"] = "1" 
+                        
+                        import imageio.v3 as iio
+                        iio.imwrite(output_image_dir / f"{camera_idx:05d}.exr", render_image)
                 if output_format == "video":
                     if writer is None:
                         render_width = int(render_image.shape[1])
@@ -328,7 +334,7 @@ class BaseRender:
     """Path to config YAML file."""
     output_path: Path = Path("renders/output.mp4")
     """Path to output video file."""
-    image_format: Literal["jpeg", "png"] = "jpeg"
+    image_format: Literal["jpeg", "png", "exr"] = "jpeg"
     """Image format"""
     jpeg_quality: int = 100
     """JPEG quality"""

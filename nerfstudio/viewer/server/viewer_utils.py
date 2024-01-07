@@ -95,9 +95,11 @@ def get_free_port(default_port: Optional[int] = None):
     Returns:
         A free port on the local machine.
     """
+    # Try consecutive ports first
     if default_port is not None:
-        if is_port_open(default_port):
-            return default_port
+        for i in range(16):
+            if is_port_open(default_port+i):
+                return default_port+i
     sock = socket.socket()
     sock.bind(("", 0))
     port = sock.getsockname()[1]

@@ -41,7 +41,12 @@ class ColormapOptions:
     """ Maximum value for the output colormap """
     invert: bool = False
     """ Whether to invert the output colormap """
-
+    tonemap2srgb: bool = False
+    """Whether to apply sRGB tonemapping first """
+    bin2rgb: bool = False
+    """Whether to convert average binary image to RGB """
+    factor: float = 1.0
+    """Light level in aritrary units """
 
 def apply_colormap(
     image: Float[Tensor, "*bs channels"],
@@ -61,6 +66,13 @@ def apply_colormap(
     Returns:
         Tensor with the colormap applied.
     """
+    if colormap_options.bin2rgb:
+        from spsim.color import binary_avg_to_rgb
+        image = binary_avg_to_rgb(image, factor=colormap_options.factor)
+
+    if colormap_options.tonemap2srgb:
+        from spsim.color import linearrgb_to_srgb
+        image = linearrgb_to_srgb(image)
 
     # default for rgb images
     if image.shape[-1] == 3:
