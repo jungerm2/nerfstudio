@@ -619,6 +619,9 @@ class DatasetRender(BaseRender):
         data_manager_config = config.pipeline.datamanager
         # assert isinstance(data_manager_config, VanillaDataManagerConfig)
 
+        if self.data is not None:
+            data_manager_config.data = self.data
+
         for split in self.split.split("+"):
             datamanager: VanillaDataManager
             dataset: Dataset
