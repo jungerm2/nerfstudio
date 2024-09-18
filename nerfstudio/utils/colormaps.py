@@ -79,6 +79,7 @@ def apply_colormap(
         return image
 
     # rendering depth outputs
+    image = image.float()
     if image.shape[-1] == 1 and torch.is_floating_point(image):
         output = image
         if colormap_options.normalize:
@@ -99,6 +100,7 @@ def apply_colormap(
     if image.shape[-1] > 3:
         return apply_pca_colormap(image)
 
+    print(image.shape, image.dtype)
     raise NotImplementedError
 
 

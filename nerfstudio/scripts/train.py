@@ -45,8 +45,8 @@ subcommand:
 
 from __future__ import annotations
 
-import torch._dynamo
-torch._dynamo.config.suppress_errors = True
+# import torch._dynamo
+# torch._dynamo.config.suppress_errors = True
 
 import random
 import socket
